@@ -1,70 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Iron Horse Motorcycles - Cruiser</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="./css/style.css" rel="stylesheet">
 </head>
+
 <body>
-  <div class="container">
-    <nav class="navbar navbar-light bg-light" id="app">
-        Iron Horse - Cruiser
-        <div class="badge badge-secondary">Cart(0)</div>
+  <div class="container" id="app">
+    <nav class="navbar navbar-light bg-light">
+      {{ title }}
+      <div class="badge badge-secondary">Cart({{ cart }})</div>
     </nav>
     <div class="row">
       <div class="col-sm-6">
-        <img class="img-fluid" src="img/motorcycle-red.jpg" alt="Red Motorcycle Illustration ">
+        <img class="img-fluid" v-bind:src="image" alt="Red Motorcycle Illustration ">
       </div>
       <div class="col-sm-6">
-        <h1>Cruiser</h1>
-        <p>Iron Horse</p>
-        <p class="lead">True to its name, the Iron Horse Cruiser is an <i>experience and expression of freedom</i>.</p>
-        <p>InStock</p>
+        <h1>{{ name }}</h1>
+        <p>{{ brand }}</p>
+        <p class="lead" v-html="description"></p>
+        <p :style="variations[selectedVariation].quantity < 5 ? {color: 'red', fontWeight: 'bold'}:'' ">
+          InStock ({{ variations[selectedVariation].quantity }})
+          <span v-show="variations[selectedVariation].quantity < 5">(Almost Sold Out)</span>
+        </p>
         <div>
           <h2>Colours Available</h2>
-          <span class="color-box">Red</span>
-          <span class="color-box">Blue</span>
+          <span class="color-box" v-for="(variation, index) in variations" :key="index"
+            v-on:mouseover="updateProduct(index)" v-bind:class="variation.color"></span>
         </div>
-        <button>Add to Cart</button>
-        <button>Remove from Cart</button>      
+        <button :style="{backgroundColor: 'green'}" v-on:click="cart++">Add to Cart</button>
+        <span v-if="cart > 0">
+          <button :style="{backgroundColor: 'red'}" @click="cart--">Remove from Cart</button>
+        </span>
+        <span v-else>
+          <button :style="redButton" v-on:click="cart">Remove from Cart</button>
+        </span>
       </div>
       <div class="col-sm-12">
-          <section>
-              <h2>Features</h2>
+        <section>
+          <h2>Features</h2>
+          <ul>
+            <li v-for="feature in features ">{{ feature }}</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Specs</h2>
+          <dl v-for="(value, key) in specs">
+            <dt>{{ key }}</dt>
+            <dd v-if="Array.isArray(value)">
               <ul>
-                <li>1200CC Air-cooled Evolution Engine</li>
-                <li>Closed loop exhaust system</li>
-                <li>Chrome Details</li>
+                <li v-for="item in value">{{ item }}</li>
               </ul>
-            </section>
-            <section>
-              <h2>Specs</h2>
-              <dl>
-                <dt>engine</dt>
-                <dd>1200cc</dd>
-                <dt>torque</dt>
-                <dd>99 NM</dd>
-                <dt>weight</dt>
-                <dd>255 kg</dd>
-                <dt>Other</dt>
-                <dd>
-                  <ul>
-                    <li>Two tone colour</li>
-                    <li>Fog Lamps</li>
-                    <li>Alloy Wheels</li>
-                  </ul>
-                </dd>
-              </dl>
-            </section>
+            </dd>
+            <dd v-else>
+              {{ value }}
+            </dd>
+          </dl>
+        </section>
       </div>
     </div>
-    
+
     <footer>
-      <small><a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by brgfx - www.freepik.com</a></small>
+      <small><a href="https://www.freepik.com/free-photos-vectors/background">Background vector created by brgfx -
+          www.freepik.com</a></small>
     </footer>
   </div>
+  <!-- development version, includes helpful console warnings -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script SRC="./js/app.js"></script>
 </body>
+
 </html>
