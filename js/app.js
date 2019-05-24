@@ -31,7 +31,9 @@ var app = new Vue({
     selectedVariation: 0,
     redButton: {
       backgroundColor: 'red'
-    }
+    },
+    tabs: ['Features', 'Specs'],
+    selectedTab: 'Features'
   },
   computed: {
     title: function () {
